@@ -6,7 +6,7 @@ import Products from "./pages/Products";
 import Outflows from "./pages/Outflows";
 import Incomes from "./pages/Incomes";
 import Orders from "./pages/Orders";
-import Close from "./pages/close";
+import Close from "./pages/Close";
 
 function App() {
   return (
