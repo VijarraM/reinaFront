@@ -1,12 +1,19 @@
 import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useLocation } from "react-router-dom"; // Importa useHistory de react-router-dom
+import { useLocation } from "react-router-dom";
 
 const navigation = [
   { name: "Vender", href: "/home" },
   { name: "Marcaciones", href: "/marcaciones" },
-  { name: "Productos", href: "/products" },
+  {
+    name: "Productos",
+    options: [
+      { name: "Crear Producto", href: "/product1" },
+      { name: "Editar Producto", href: "/product2" },
+      { name: "Agregar Stock", href: "/product3" },
+    ],
+  },
   { name: "Salidas", href: "/outflows" },
   { name: "Ingresos", href: "/incomes" },
   { name: "Pedidos", href: "/orders" },
@@ -19,11 +26,8 @@ function classNames(...classes) {
 
 const NavBar = () => {
   const location = useLocation();
-
-  // Estado para almacenar la URL actual
   const [currentUrl, setCurrentUrl] = useState("");
 
-  // Al montar el componente o cuando la ubicación cambia, actualiza el estado con la URL actual
   useEffect(() => {
     setCurrentUrl(location.pathname);
   }, [location]);
@@ -56,20 +60,62 @@ const NavBar = () => {
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          currentUrl === item.href
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "rounded-md px-3 py-2 text-sm font-medium"
-                        )}
-                      >
-                        {item.name}
-                      </a>
-                    ))}
+                    {navigation.map((item) =>
+                      item.options ? (
+                        <Menu key={item.name} as="div" className="relative">
+                          <Menu.Button
+                            className={classNames(
+                              currentUrl.startsWith(item.href)
+                                ? "bg-gray-900 text-white"
+                                : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                              "rounded-md px-3 py-2 text-sm font-medium"
+                            )}
+                          >
+                            {item.name}
+                          </Menu.Button>
+                          <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-100"
+                            enterFrom="transform opacity-0 scale-95"
+                            enterTo="transform opacity-100 scale-100"
+                            leave="transition ease-in duration-75"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-95"
+                          >
+                            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                              {item.options.map((option) => (
+                                <Menu.Item key={option.name}>
+                                  {({ active }) => (
+                                    <a
+                                      href={option.href}
+                                      className={classNames(
+                                        active ? "bg-gray-100" : "",
+                                        "block px-4 py-2 text-sm text-gray-700"
+                                      )}
+                                    >
+                                      {option.name}
+                                    </a>
+                                  )}
+                                </Menu.Item>
+                              ))}
+                            </Menu.Items>
+                          </Transition>
+                        </Menu>
+                      ) : (
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          className={classNames(
+                            currentUrl.startsWith(item.href)
+                              ? "bg-gray-900 text-white"
+                              : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                            "rounded-md px-3 py-2 text-sm font-medium"
+                          )}
+                        >
+                          {item.name}
+                        </a>
+                      )
+                    )}
                   </div>
                 </div>
               </div>
@@ -151,7 +197,7 @@ const NavBar = () => {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    currentUrl === item.href
+                    currentUrl.startsWith(item.href)
                       ? "bg-gray-900 text-white"
                       : "text-gray-300 hover:bg-gray-700 hover:text-white",
                     "block rounded-md px-3 py-2 text-base font-medium"
@@ -167,4 +213,5 @@ const NavBar = () => {
     </Disclosure>
   );
 };
+
 export default NavBar;
