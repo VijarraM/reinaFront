@@ -35,11 +35,19 @@ function Marcaciones() {
           <h1 style={styles.clock}>{currentTime.toLocaleTimeString()}</h1>
           <p style={styles.turno}>Turno: {getTurno()}</p>
         </div>
-        <div style={styles.buttonsContainer}>
-          <button style={styles.button} onClick={handleIngresoClick}>
+        <div className="mt-6 flex items-center justify-center gap-x-6">
+          <button
+            type="button"
+            onClick={handleIngresoClick}
+            className="rounded-md bg-green-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+          >
             Ingreso
           </button>
-          <button style={styles.button} onClick={handleSalidaClick}>
+          <button
+            type="button"
+            onClick={handleSalidaClick}
+            className="rounded-md bg-red-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-900"
+          >
             Salida
           </button>
         </div>
@@ -71,20 +79,6 @@ const styles = {
   },
   buttonsContainer: {
     marginTop: "2rem",
-  },
-  button: {
-    backgroundColor: "#4CAF50",
-    border: "none",
-    color: "white",
-    padding: "15px 32px",
-    textAlign: "center",
-    textDecoration: "none",
-    display: "inline-block",
-    fontSize: "16px",
-    margin: "4px 2px",
-    cursor: "pointer",
-    borderRadius: "8px",
-    transition: "background-color 0.3s ease",
   },
 };
 
